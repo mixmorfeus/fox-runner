@@ -31,6 +31,6 @@ Dopo la revisione della PR iniziale e il merge su main, attiva **Settings → Pa
 
 Questo commit iniziale è un prototipo realizzato da **ChatGPT**, non dagli agenti locali. Il primo test autentico prevede un miglioramento del gioco prodotto da OpenCode e verificato separatamente da Claude Code/Codex: ogni contributo deve avere diff, test, commit e rapporto attribuiti correttamente.
 
-Il codice del gioco risiede **soltanto** nel repository fox-runner; il repository privato agent-dev-hub conserva task e rapporti. Nessuna credenziale, automazione di trading o file di ZORRO va portata qui.
+Il codice del gioco risiede **soltanto** nel repository fox-runner; il repository privato agent-dev-hub conserva task e rapporti. Nessuna credenziale.
 
 Lo script scripts/AUTO-COMMIT-FOX.ps1 verifica test e branch, mostra il diff e richiede conferma esplicita prima di commit e push; non fa merge automatici.
