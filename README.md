@@ -1,36 +1,44 @@
 # 🦊 FOX RUNNER
 
-An open-source fox runner game for browser and terminal, built to test autonomous AI-agent collaboration, development, testing, and continuous improvement with Agent Dev Hub.
+Minigioco runner open source con una volpe, giocabile nel browser e nel terminale Windows. È anche un progetto di collaudo per il coordinamento di agenti di sviluppo tramite Agent Dev Hub; la versione iniziale è un prototipo creato da ChatGPT, non un risultato autonomo degli agenti.
 
-## Gioca
+## Giocare
 
-- **Browser / GitHub Pages:** apri la pagina pubblicata oppure il file index.html. Funziona senza dipendenze esterne, anche da file locale.
-- **Terminale Windows:** doppio clic su AVVIA-FOX-RUNNER-TERMINALE.cmd oppure esegui py -3 terminal/fox_runner.py.
-- **Comandi:** Spazio, freccia su o W per saltare; P per pausa; R per ricominciare. Da smartphone usa SALTA.
+- **Browser:** apri `index.html` direttamente, senza server o librerie esterne. Il file `game-browser.js` è già incluso.
+- **Terminale Windows:** usa `AVVIA-FOX-RUNNER-TERMINALE.cmd` oppure esegui `py -3 terminal/fox_runner.py` dalla radice del progetto.
+- **Comandi:** Spazio, freccia su o W per saltare; P per mettere in pausa; R per ricominciare. Su telefono usa il pulsante SALTA.
 
 ## Test
 
-Servono Node.js 18+ per i test JavaScript e Python 3 per il terminale.
+Richiedono Node.js 18+ e Python 3.
 
-~~~sh
+```powershell
 node --test tests/*.test.mjs
 node --check game-engine.mjs
 node --check game.mjs
 node --check game-browser.js
-python scripts/build_browser.py
-python -m py_compile terminal/fox_runner.py
-~~~
+py -3 scripts/build_browser.py
+py -3 -m py_compile terminal/fox_runner.py
+```
 
-Il file game-browser.js è generato dai moduli game-engine.mjs + game.mjs per poter aprire il gioco con un doppio clic. Rigenerarlo quando cambiano i moduli.
+`game-browser.js` è generato da `game-engine.mjs` e `game.mjs`. Rigeneralo quando cambiano questi moduli e verifica il risultato prima del commit. GitHub Actions controlla che il bundle sia aggiornato, esegue i test del gioco e verifica la sintassi dello script PowerShell di commit.
 
 ## GitHub Pages
 
-Dopo la revisione della PR iniziale e il merge su main, attiva **Settings → Pages → Deploy from a branch → main / (root)**. L'indirizzo previsto sarà https://mixmorfeus.github.io/fox-runner/ solo dopo la conferma di GitHub.
+Per pubblicare il sito da questo repository, usa **Settings → Pages → Deploy from a branch → main / (root)**. L'indirizzo previsto è [mixmorfeus.github.io/fox-runner](https://mixmorfeus.github.io/fox-runner/), solo dopo l'attivazione e la conferma di pubblicazione da GitHub.
 
-## FOX-001 · collaudo Agent Dev Hub
+## Sviluppo controllato con gli agenti
 
-Questo commit iniziale è un prototipo realizzato da **ChatGPT**, non dagli agenti locali. Il primo test autentico prevede un miglioramento del gioco prodotto da OpenCode e verificato separatamente da Claude Code/Codex: ogni contributo deve avere diff, test, commit e rapporto attribuiti correttamente.
+Il primo collaudo autentico con gli agenti richiede una modifica verificabile del gioco, test, diff e un rapporto di handoff. Lo script `scripts/AUTO-COMMIT-FOX.ps1` è un ausilio manuale: controlla repository, branch `agent/opencode/FOX-001`, file ammessi e test, poi richiede una conferma esplicita prima del commit e del push. **Non esegue merge automatici su `main`.**
 
-Il codice del gioco risiede **soltanto** nel repository fox-runner; il repository privato agent-dev-hub conserva task e rapporti. Nessuna credenziale.
+Per avviarlo dalla radice del repository, dopo aver verificato le modifiche:
 
-Lo script scripts/AUTO-COMMIT-FOX.ps1 verifica test e branch, mostra il diff e richiede conferma esplicita prima di commit e push; non fa merge automatici.
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\AUTO-COMMIT-FOX.ps1
+```
+
+Non inserire credenziali, token, file personali o documenti riservati in questo repository pubblico. Le autorizzazioni degli agenti vanno limitate anche al di fuori dello script; la sola lista di file ammessi non costituisce un perimetro di sicurezza.
+
+## Licenza
+
+MIT. Consulta `LICENSE`.
