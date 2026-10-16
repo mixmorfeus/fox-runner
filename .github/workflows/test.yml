@@ -1,0 +1,21 @@
+name: Verify FOX RUNNER
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  game-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/*.test.mjs
+      - run: node --check game.mjs && node --check game-engine.mjs && node --check game-browser.js
+      - run: python scripts/build_browser.py && git diff --exit-code game-browser.js
+      - name: Python terminal syntax check
+        run: python -m py_compile terminal/fox_runner.py
