@@ -1,5 +1,5 @@
 # FOX-001: commit/push ONLY on the dedicated fox-runner feature branch.
-# Deliberate local execution, after agent modifications are inspected.
+# Run manually after reviewing the agent's changes. Never merges to main.
 $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $branch = 'agent/opencode/FOX-001'
@@ -13,7 +13,7 @@ $files = @(
  'scripts/build_browser.py', 'scripts/AUTO-COMMIT-FOX.ps1'
 )
 function Assert-GitOk([string]$name) {
- if ($LASTEXITCODE -ne 0) { throw "$name: exit $LASTEXITCODE" }
+ if ($LASTEXITCODE -ne 0) { throw "${name}: exit $LASTEXITCODE" }
 }
 if (-not (Test-Path -LiteralPath (Join-Path $root '.git'))) { throw 'Non e il repository Git del gioco.' }
 $top = (git -C $root rev-parse --show-toplevel).Trim()
