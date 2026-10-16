@@ -2,6 +2,10 @@
 
 Minigioco runner open source con una volpe, giocabile nel browser e nel terminale Windows. È anche un progetto di collaudo per il coordinamento di agenti di sviluppo tramite Agent Dev Hub; la versione iniziale è un prototipo creato da ChatGPT, non un risultato autonomo degli agenti.
 
+## [FOX-001] Ostacoli senza sovrapposizioni
+
+Il miglioramento proposto da OpenCode e corretto da Codex verifica lo spazio al momento della generazione: un nuovo ostacolo attende finché restano almeno 90 px tra il bordo destro del precedente e il proprio bordo sinistro, dopo il movimento del frame. Tempi casuali, progressione della velocità e collisioni restano quelli originali.
+
 ## Giocare
 
 - **Browser:** apri `index.html` direttamente, senza server o librerie esterne. Il file `game-browser.js` è già incluso.
@@ -17,6 +21,7 @@ node --test tests/*.test.mjs
 node --check game-engine.mjs
 node --check game.mjs
 node --check game-browser.js
+py -3 scripts/test_bundle.py
 py -3 scripts/build_browser.py
 py -3 -m py_compile terminal/fox_runner.py
 ```

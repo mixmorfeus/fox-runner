@@ -52,11 +52,15 @@ export function stepGame(state, dt, controls = {}) {
   let obstacles = state.obstacles
     .map(o => ({...o, x: o.x - state.speed * dt}))
     .filter(o => o.x + o.width >= -12);
-  if (nextObstacle <= 0) {
+  // Check the nearest obstacle after movement; measure clear space between edges.
+  const lastObstacle = obstacles[obstacles.length - 1];
+  const spawnX = WORLD.width + 8;
+  const hasSpace = !lastObstacle || spawnX - (lastObstacle.x + lastObstacle.width) >= 90;
+  if (nextObstacle <= 0 && hasSpace) {
     let roll;
     [roll, seed] = rand(seed);
     const kind = roll < 0.52 ? 'log' : 'bush';
-    obstacles.push({x: WORLD.width + 8, kind, width: kind === 'log' ? 38 : 45, height: kind === 'log' ? 32 : 43});
+    obstacles.push({x: spawnX, kind, width: kind === 'log' ? 38 : 45, height: kind === 'log' ? 32 : 43});
     [roll, seed] = rand(seed);
     nextObstacle = 0.94 + roll * 0.52 + Math.max(0, (speed - SPEED_START) / 350) * 0.07;
   }
