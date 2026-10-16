@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101a34">
+  <meta name="description" content="FOX RUNNER: un minigioco gratuito, offline dopo il caricamento, con una volpe che salta gli ostacoli.">
+  <title>FOX RUNNER 🦊 · Gioca nel browser</title>
+  <link rel="stylesheet" href="./style.css">
+  <script defer src="./game-browser.js"></script>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="mark">🦊 <span>FOX <em>RUNNER</em></span></div>
+      <span class="version">AGENT DEV HUB · ARCADE LAB</span>
+    </header>
+    <section class="intro" aria-labelledby="game-title">
+      <div class="eyebrow">01 / ARCADE EXPERIMENT</div>
+      <h1 id="game-title">Corri. Salta.<br><span>Non mollare la coda.</span></h1>
+      <p>Una piccola volpe, una corsa infinita. Schiva i tronchi e i cespugli, migliora il tuo record e riprova.</p>
+    </section>
+    <section class="arcade" aria-label="Gioco FOX RUNNER">
+      <div class="scoreboard" aria-live="off">
+        <div><small>PUNTEGGIO</small><strong id="score">00000</strong></div>
+        <div><small>RECORD</small><strong id="best">00000</strong></div>
+        <div><small>VELOCITÀ</small><strong id="speed">1.0×</strong></div>
+      </div>
+      <div class="screen">
+        <canvas id="game" width="960" height="360" role="img" aria-label="Volpe che corre su un sentiero e salta gli ostacoli">Il tuo browser non supporta Canvas.</canvas>
+        <div class="overlay" id="overlay" aria-live="polite">
+          <div class="overlay-icon" id="overlay-icon">🦊</div>
+          <h2 id="overlay-title">Pronta a correre?</h2>
+          <p id="overlay-message">Premi SPAZIO oppure il pulsante GIOCA.</p>
+          <button class="big-button" id="start" type="button">GIOCA <span>→</span></button>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="tips"><span><kbd>SPAZIO</kbd> SALTA</span><span><kbd>P</kbd> PAUSA</span><span><kbd>R</kbd> RICOMINCIA</span></div>
+        <div class="actions"><button id="pause" type="button" aria-label="Metti in pausa o riprendi">⏸ Pausa</button><button id="jump" type="button">↑ SALTA</button></div>
+      </div>
+    </section>
+    <footer>Creato per provare uno sviluppo multi-agente. Nessun login, pubblicità o dato inviato a server. <span>Giocabile anche da smartphone.</span></footer>
+  </main>
+</body>
+</html>
