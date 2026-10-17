@@ -10,7 +10,7 @@ $files = @(
  'game-browser.js', 'game-engine.mjs', 'game.mjs',
  'index.html', 'style.css', 'terminal/fox_runner.py',
  'tests/browser-smoke.test.mjs', 'tests/game-engine.test.mjs',
- 'scripts/build_browser.py', 'scripts/AUTO-COMMIT-FOX.ps1'
+ 'scripts/build_browser.py', 'scripts/test_bundle.py', 'scripts/AUTO-COMMIT-FOX.ps1'
 )
 function Assert-GitOk([string]$name) {
  if ($LASTEXITCODE -ne 0) { throw "${name}: exit $LASTEXITCODE" }
@@ -25,6 +25,9 @@ if ($current -cne $branch) { throw "Branch inatteso: $current. Richiesto: $branc
 $remote = (git -C $root remote get-url origin).Trim() -replace '\.git$', ''
 Assert-GitOk 'git remote'
 if ($remote -cne $expectedRemote) { throw "Remote inatteso: $remote" }
+$pushRemote = (git -C $root remote get-url --push --all origin)
+Assert-GitOk 'git push remote'
+if (@($pushRemote).Count -ne 1 -or ($pushRemote -replace '\.git$', '') -cne $expectedRemote) { throw 'Remote push inatteso.' }
 $status = @(git -C $root status --porcelain --untracked-files=all)
 Assert-GitOk 'git status'
 $changed = @($status | ForEach-Object { $_.Substring(3).Replace('\','/') })
@@ -34,6 +37,11 @@ $staged = @(git -C $root diff --cached --name-only)
 Assert-GitOk 'git staged'
 if ($staged.Count) { throw 'Index Git non vuoto: fermarsi.' }
 if (-not $changed.Count) { Write-Host 'Nessuna modifica da committare.'; exit 0 }
+& py -3 (Join-Path $root 'scripts\test_bundle.py')
+Assert-GitOk 'Bundle consistency'
+$tokens = $null; $errors = $null
+[System.Management.Automation.Language.Parser]::ParseFile($PSCommandPath, [ref]$tokens, [ref]$errors) | Out-Null
+if ($errors.Count) { throw ($errors -join '; ') }
 Write-Host '=== TEST FOX RUNNER ===' -ForegroundColor Cyan
 & node --test (Join-Path $root 'tests\browser-smoke.test.mjs') (Join-Path $root 'tests\game-engine.test.mjs')
 Assert-GitOk 'Node tests'
@@ -50,5 +58,5 @@ if ($answer -cne 'COMMIT') { Write-Host 'Annullato. Nessuna scrittura Git.'; exi
 git -C $root add -- $changed; Assert-GitOk 'git add'
 git -C $root diff --cached --check; Assert-GitOk 'git diff check'
 git -C $root commit -m 'feat(fox): validated agent game iteration FOX-001'; Assert-GitOk 'git commit'
-git -C $root push -u origin $branch; Assert-GitOk 'git push'
+git -C $root push -u origin "HEAD:refs/heads/$branch"; Assert-GitOk 'git push'
 Write-Host 'Branch FOX-001 pubblicato, nessun merge su main.' -ForegroundColor Green
